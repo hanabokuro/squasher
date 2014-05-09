@@ -22,7 +22,7 @@ module Squasher
 
         migrations.each { |file| FileUtils.rm(file) }
 
-        Squasher.rake("db:drop") unless Squasher.ask(:keep_database)
+#        Squasher.rake("db:drop") unless Squasher.ask(:keep_database) # @@@
       end
       Squasher.clean if result && Squasher.ask(:apply_clean)
     end
@@ -64,8 +64,9 @@ module Squasher
 
     def under_squash_env
       config.stub_dbconfig do
-        if Squasher.rake("db:drop db:create", :db_create) &&
-          Squasher.rake("db:migrate VERSION=#{ finish_timestamp }", :db_migrate)
+#        if Squasher.rake("db:drop db:create", :db_create) &&  # @@@
+        if Squasher.rake("db:create_for_development") &&
+            Squasher.padrino_rake("ar:migrate VERSION=#{ finish_timestamp }", :db_migrate)
           yield
         end
       end

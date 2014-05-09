@@ -21,6 +21,11 @@ module Squasher
     system("bundle exec rake #{ command }")
   end
 
+  def padrino_rake(command, description = nil) # @@@
+    tell(description) if description
+    system("bundle exec padrino rake #{ command }")
+  end
+  
   def ask(*args)
     tell(*args)
     $stdin.gets[0].downcase == 'y'
